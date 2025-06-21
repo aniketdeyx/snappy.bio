@@ -3,7 +3,7 @@ import { ArrowRight, Star } from "lucide-react";
 
 const CallToAction = () => {
   return (
-    <section className="py-24 px-6 bg-gradient-to-r from-amber-200 via-amber-300 to-orange-300">
+    <section className="py-24 px-6 bg-gradient-to-r from-[#886c45] via-[#cda365] to-[#dbb14f]">
       <div className="max-w-4xl mx-auto text-center">
         <div className="flex items-center justify-center mb-6">
           {[...Array(5)].map((_, i) => (

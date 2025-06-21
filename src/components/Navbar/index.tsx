@@ -1,5 +1,6 @@
 import  { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,10 +9,12 @@ const Navbar = () => {
     <nav className="sticky top-0 w-full z-50 glass-effect border-b border-amber-300/30 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
+        <Link to='/'>
         <div className="text-xl font-semibold text-amber-900">snappy.bio</div>
+        </Link>
 
         {/* Center nav */}
-        <div className="hidden md:flex items-center  md:ml-27 space-x-6">
+        <div className="hidden md:flex items-center  md:ml-18 space-x-6">
           {["Pricing", "Features", "Examples"].map((item) => (
             <a
               key={item}
@@ -24,8 +27,8 @@ const Navbar = () => {
         </div>
 
         {/* Right nav */}
-        <div className="hidden md:flex items-center space-x-4">
-          <a href="#" className="nav-link text-amber-900">Sign In</a>
+        <div className="hidden text-sm md:flex items-center space-x-4">
+          <a href="/login" className="nav-link text-amber-900">Sign In</a>
           <a
             href="#"
             className="px-4 py-2 bg-amber-800 text-white rounded-md hover:bg-amber-900 transition"

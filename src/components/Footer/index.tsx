@@ -2,7 +2,7 @@ import { Coffee, Heart } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="py-12 px-6 bg-amber-100 border-t border-amber-300">
+    <footer className="py-12 px-6 bg-[#ae744a]/40">
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
@@ -53,7 +53,7 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-amber-300 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-amber-800">
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-amber-800">
           <p>&copy; 2024 snapp.bio. All rights reserved.</p>
           <div className="flex items-center mt-4 md:mt-0">
             <span>Brewed with</span>

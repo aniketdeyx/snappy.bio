@@ -36,14 +36,14 @@ const Features = () => {
   ];
 
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-amber-100 to-amber-200">
+    <section className="py-24 px-6 bg-gradient-to-tl from-[#846238] via-[#946340] to-[#aa7e48]">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-amber-900">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-50">
             Everything you need to
             <span className="gradient-text block">brew success</span>
           </h2>
-          <p className="text-xl text-amber-800 max-w-2xl mx-auto">
+          <p className="text-xl text-black max-w-2xl mx-auto">
             Powerful features designed to help you create, customize, and serve your perfect digital bio.
           </p>
         </div>

@@ -31,8 +31,8 @@ export const LinkEditor = () => {
           className="flex items-center gap-2 bg-white border px-3 py-2 rounded-md"
         >
           <input
-            value={link.title}
-            onChange={(e) => updateLink(link.id, { title: e.target.value })}
+            value={link.url}
+            onChange={(e) => updateLink(link.id, { url: e.target.value })}
             placeholder="Link title"
             className="flex-1 text-sm outline-none"
           />

@@ -54,6 +54,7 @@ export const BasicInfo = () => {
   <div>
     <input
       type="text"
+      value={username}
       onChange={(e) => setUsername(e.target.value)}
       className="w-full px-4 py-2 border text-sm rounded-md border-gray-400 focus:outline-none"
       placeholder="what should we call you?"
@@ -66,6 +67,7 @@ export const BasicInfo = () => {
     <textarea
       onChange={(e) => setBio(e.target.value)}
       rows={3}
+      value={bio}
       placeholder="Tell us about yourself..."
       className="w-full px-4 py-2 border text-sm rounded-md border-gray-400 focus:outline-none resize-none"
     />

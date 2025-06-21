@@ -2,7 +2,7 @@ import { useEditorStore } from "../../../store/store";
 
 
 export const BackgroundChooser = () => {
-  const { backgroundColor, setBackground } = useEditorStore();
+  const { backgroundColor, setBackgroundColor } = useEditorStore();
   const colors = ["#fef3c7", "#fcd34d", "#fbbf24", "#a16207", "#78350f"];
 
   return (
@@ -14,7 +14,7 @@ export const BackgroundChooser = () => {
         {colors.map((color) => (
           <button
             key={color}
-            onClick={() => setBackground("solid", color)}
+            onClick={() => setBackgroundColor( color)}
             className={`w-8 h-8 rounded-full border-2 ${
               backgroundColor === color ? "border-black" : "border-transparent"
             }`}

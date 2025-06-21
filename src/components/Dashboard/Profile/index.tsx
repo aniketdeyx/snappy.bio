@@ -2,9 +2,34 @@ import { BackgroundChooser } from "../comps/BackgroundChooser";
 import { useEditorStore } from "../../../store/store";
 import { BasicInfo } from "../comps/BasicInfo";
 import { LinkEditor } from "../comps/LinkEditor";
+import { Button } from "@/components/ui/button";
 
 const Profile = () => {
-  const { backgroundColor } = useEditorStore();
+  const {     username,
+    bio,
+    profileImage,
+    links,
+    backgroundColor, } = useEditorStore();
+  const saveProfile = async () => {
+    console.log(backgroundColor)
+  const res = await fetch("http://localhost:3000/api/user/profile", {
+    method: "PUT",
+    credentials: "include", // include cookie with token
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username,
+      bio,
+      profileImage,
+      links,
+      bgColor: backgroundColor
+    }),
+  });
+
+  const data = await res.json();
+  console.log(data); // { message: "Profile updated" }
+};
+
+
 
   return (
     <div
@@ -14,6 +39,9 @@ const Profile = () => {
       <BasicInfo />
       <LinkEditor />
       <BackgroundChooser />
+      <Button onClick={saveProfile} className="mt-4 w-full">
+        Save Profile
+      </Button>
     </div>
   );
 };
