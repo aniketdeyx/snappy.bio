@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const linkSchema = new mongoose.Schema({
   label: String,
   url: String,
-  icon: String
 });
 
 const userSchema = new mongoose.Schema({

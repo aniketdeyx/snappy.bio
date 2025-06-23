@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import { useEditorStore } from "../../../store/store";
 import { Trash2 } from "lucide-react";
 
-
 export const LinkEditor = () => {
   const { links, addLink, updateLink, removeLink } = useEditorStore();
 
@@ -14,7 +13,7 @@ export const LinkEditor = () => {
           onClick={() =>
             addLink({
               id: uuidv4(),
-              title: "New Link",
+              label: "",
               url: "",
               icon: "link",
             })
@@ -25,17 +24,34 @@ export const LinkEditor = () => {
         </button>
       </div>
 
-      {links.map((link) => (
+      {links?.map((link) => (
         <div
           key={link.id}
-          className="flex items-center gap-2 bg-white border px-3 py-2 rounded-md"
+          className="grid grid-cols-[1fr_2fr_auto] gap-2 items-center bg-white border px-3 py-2 rounded-md"
         >
+          {/* Label Field */}
           <input
-            value={link.url}
-            onChange={(e) => updateLink(link.id, { url: e.target.value })}
-            placeholder="Link title"
-            className="flex-1 text-sm outline-none"
+            type="text"
+            value={link.label}
+            onChange={(e) =>
+              updateLink(link.id, { label: e.target.value })
+            }
+            placeholder="title"
+            className="text-sm px-2 py-1 rounded-md border border-gray-300 focus:outline-none"
           />
+
+          {/* URL Field */}
+          <input
+            type="url"
+            value={link.url}
+            onChange={(e) =>
+              updateLink(link.id, { url: e.target.value })
+            }
+            placeholder="https://example.com"
+            className="text-sm px-2 py-1 rounded-md border border-gray-300 focus:outline-none"
+          />
+
+          {/* Delete Button */}
           <button onClick={() => removeLink(link.id)}>
             <Trash2 className="w-4 h-4 text-red-500" />
           </button>

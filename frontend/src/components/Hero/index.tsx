@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Coffee } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#ede0d4] via-[#e6ccb2] to-[#ede0d4]">
       {/* Background coffee beans effect */}
@@ -24,7 +26,8 @@ const Hero = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button 
+          <Button
+          onClick={() =>  navigate("/auth")}
             size="lg" 
             variant="default"
             className=" text-black hover:shadow-2xl rounded-full hover:shadow-amber-700/25 transition-all duration-300 text-lg px-8 py-6"

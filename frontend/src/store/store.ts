@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 interface LinkItem {
   id: string;
-  title: string;
+  label: string;
   url: string;
   icon: string;
 }
