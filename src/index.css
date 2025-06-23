@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+html,
+body {
+  width: 100dvw;
+  overflow-x: hidden;
+  background-color: #eaded5;
+  scroll-behavior: smooth;
+}
+.glass-effect {
+  @apply backdrop-blur-md bg-gray-100/80 border border-gray-300/50;
+}
+
+.underline-hover {
+  @apply hover:underline underline-offset-4 transition duration-150;
+}
+@layer utilities {
+  .nav-link {
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s;
+  }
+  .stroke-black {
+  -webkit-text-stroke: 0.5px black;
+  color: white;
+}
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+}
