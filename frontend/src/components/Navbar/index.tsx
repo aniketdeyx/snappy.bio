@@ -1,10 +1,16 @@
 import  { useState } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { Link } from "react-router";
+import { useAuthStore } from "@/store/store";
+import UserNavbar from "../UserNavbar";
+
 
 const Navbar = () => {
+  const {user }= useAuthStore();
+  console.log("User in Navbar:", user);
   const [isOpen, setIsOpen] = useState(false);
 
+  if(user) return <UserNavbar />
   return (
     <nav className="sticky top-0 w-full z-50 glass-effect border-b border-amber-300/30 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">

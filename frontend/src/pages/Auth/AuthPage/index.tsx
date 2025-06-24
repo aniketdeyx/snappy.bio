@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { useAuthStore } from "@/store/store";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,16 +10,20 @@ const AuthPage = () => {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setUser} = useAuthStore();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     try {
-      await axios.post(
+      const res = await axios.post(
         "http://localhost:3000/api/auth/login",
         { email, password },
         { withCredentials: true }
       );
+      const userData = res.data.user;
+      setUser(userData.email);
+
       navigate("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.error || "Login failed");
@@ -34,6 +39,7 @@ const AuthPage = () => {
         { username, email, password },
         { withCredentials: true }
       );
+
       navigate("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.error || "Registration failed");

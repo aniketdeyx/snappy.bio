@@ -33,6 +33,10 @@ export const login = async (req, res) => {
       sameSite: "lax", // protect against CSRF
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     })
-    .json({ message: "Logged in" });
+    .json({ message: "Logged in", user });
 
+};
+
+export const logout = (req, res) => {
+  res.clearCookie("token").json({ message: "Logged out" });
 };

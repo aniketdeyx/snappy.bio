@@ -49,3 +49,18 @@ export const useEditorStore = create<EditorState>((set) => ({
     })),
   setLinks: (links) => set({ links }),
 }));
+
+
+// store/authStore.ts
+
+interface AuthState {
+  user: null | { email: string }; // expand as needed
+  setUser: (user: any) => void;
+  clearUser: () => void;
+}
+
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  setUser: (user) => set({ user }),
+  clearUser: () => set({ user: null }),
+}));
