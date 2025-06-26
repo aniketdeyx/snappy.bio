@@ -5,6 +5,10 @@ import { Routes, Route } from "react-router";
 import AuthPage from "./pages/Auth/AuthPage";
 import Preview from "./pages/Preview";
 import ProtectedRoute from "./components/ProtectedRoute";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const App = () => {
   return (
