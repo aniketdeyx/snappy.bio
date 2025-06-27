@@ -4,6 +4,7 @@ import Layout from "./Layout";
 import { Routes, Route } from "react-router";
 import AuthPage from "./pages/Auth/AuthPage";
 import Preview from "./pages/Preview";
+import PublicProfile from "./pages/PublicProfile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -14,6 +15,9 @@ const App = () => {
   return (
 
           <Routes>
+            {/* Public profile route - accessible without authentication */}
+            <Route path="/:username" element={<PublicProfile />} />
+            
             {/* Root layout route */}
             <Route path="/" element={<Layout />}>
             <Route index element={<Homepage />} />

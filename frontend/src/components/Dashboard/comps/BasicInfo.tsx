@@ -1,7 +1,19 @@
 import { useEditorStore } from "../../../store/store";
 import { useRef } from "react";
 
-export const BasicInfo = () => {
+interface InputStyles {
+  backgroundColor: string;
+  color: string;
+  borderColor: string;
+  placeholderColor: string;
+  labelColor: string;
+}
+
+interface BasicInfoProps {
+  inputStyles: InputStyles;
+}
+
+export const BasicInfo = ({ inputStyles }: BasicInfoProps) => {
   const {
     username,
     setUsername,
@@ -76,7 +88,12 @@ export const BasicInfo = () => {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full px-4 py-2 border text-sm rounded-md border-gray-400 focus:outline-none"
+          className="w-full px-4 py-2 border text-sm rounded-md focus:outline-none transition-colors"
+          style={{ 
+            backgroundColor: inputStyles.backgroundColor,
+            color: inputStyles.color,
+            borderColor: inputStyles.borderColor
+          }}
           placeholder="What should we call you?"
         />
       </div>
@@ -88,7 +105,12 @@ export const BasicInfo = () => {
           rows={3}
           value={bio}
           placeholder="Tell us about yourself..."
-          className="w-full px-4 py-2 border text-sm rounded-md border-gray-400 focus:outline-none resize-none"
+          className="w-full px-4 py-2 border text-sm rounded-md focus:outline-none resize-none transition-colors"
+          style={{ 
+            backgroundColor: inputStyles.backgroundColor,
+            color: inputStyles.color,
+            borderColor: inputStyles.borderColor
+          }}
         />
       </div>
     </div>
