@@ -1,7 +1,8 @@
 {
-  "name": "frontend",
+  "name": "snappy-bio",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Create beautiful, personalized link pages to showcase all your social media and content",
   "type": "module",
   "scripts": {
     "dev": "vite",
