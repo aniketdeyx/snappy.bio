@@ -21,19 +21,19 @@ const Hero = () => {
     }).to("#hero-content", {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
       ease: "circ.out",
-      duration: 1,
+      duration: 2,
     }, "-=0.5").from(".hero-text-button", {
       opacity: 0,
       y: 20,
       duration: 0.5,
       ease: "power2.out",
-    }, "-=0.5").from(heroText.chars, {
+    }, "-=1").from(heroText.chars, {
       opacity: 0,
       y: 20,
       duration: 0.5,
       stagger: 0.04,
       ease: "power2.out",
-    })
+    }, "-=1")
   }, [])
 
   const navigate = useNavigate();
@@ -45,8 +45,8 @@ const Hero = () => {
       
       <div className="relative opacity-0 hero-container z-10 text-center max-w-4xl mx-auto px-6">
         <div className="flex items-center hero-upper-text justify-center mb-6">
-          <Coffee className="text-gray-800 mb-1" size={24} />
-          <span className="text-[#7f5539]/60  px-3 font-medium">Brew Your Digital Presence</span>
+          <Coffee className="text-gray-800 mb-1" size={18} />
+          <span className="text-[#7f5539]/60 px-1 font-medium">Brew Your Digital Presence</span>
         </div>
         
         <h1 id="hero-content" style={{clipPath: "polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%)"}} className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-[#7f5539]">

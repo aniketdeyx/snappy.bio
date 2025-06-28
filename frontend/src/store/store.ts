@@ -55,12 +55,55 @@ export const useEditorStore = create<EditorState>((set) => ({
 
 interface AuthState {
   user: null | { email: string }; // expand as needed
+  isLoading: boolean;
   setUser: (user: any) => void;
   clearUser: () => void;
+  setLoading: (loading: boolean) => void;
+  checkAuth: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
+  isLoading: true,
+  setUser: (user) => {
+    set({ user });
+    // Store user in localStorage for persistence
+    if (user) {
+      localStorage.setItem('snappy_user', JSON.stringify(user));
+    }
+  },
+  clearUser: () => {
+    set({ user: null });
+    localStorage.removeItem('snappy_user');
+  },
+  setLoading: (loading) => set({ isLoading: loading }),
+  checkAuth: async () => {
+    set({ isLoading: true });
+    try {
+      // First check localStorage for existing user
+      const storedUser = localStorage.getItem('snappy_user');
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        
+        // Verify the session is still valid with the backend
+        const response = await fetch('http://localhost:3000/api/auth/verify', {
+          credentials: 'include',
+        });
+        
+        if (response.ok) {
+          set({ user: userData, isLoading: false });
+        } else {
+          // Session expired, clear stored data
+          localStorage.removeItem('snappy_user');
+          set({ user: null, isLoading: false });
+        }
+      } else {
+        set({ user: null, isLoading: false });
+      }
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      localStorage.removeItem('snappy_user');
+      set({ user: null, isLoading: false });
+    }
+  },
 }));

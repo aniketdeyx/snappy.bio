@@ -204,67 +204,73 @@ const Profile = () => {
     );
   }
   return (
-    <div
-      className="mx-auto my-8 sm:my-12 md:my-16 lg:my-20 p-4 sm:p-6 md:p-10 lg:p-12 max-w-xl rounded-lg shadow-xl transition-colors duration-300 ease-in-out"
-      style={{ backgroundColor }}
-    >
-      <BasicInfo inputStyles={inputStyles} />
-      <LinkEditor inputStyles={inputStyles} />
-      <BackgroundChooser inputStyles={inputStyles} />
-      <Button onClick={saveProfile} disabled={loading} className="mt-4 w-full">
-        {loading ? "Saving..." : "Save Profile"}
-      </Button>
-      
-      <div className="grid grid-cols-2 gap-2 mt-2">
-        <button
-          onClick={() => navigate(`/preview/${username}`)}
-          disabled={hasUnsavedChanges || !username}
-          className="py-2 px-4 rounded-md border-2 font-medium transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{
-            backgroundColor: hasUnsavedChanges || !username ? "transparent" : previewButtonColors.backgroundColor,
-            color: hasUnsavedChanges || !username ? "#9ca3af" : previewButtonColors.color,
-            borderColor: hasUnsavedChanges || !username ? "#d1d5db" : previewButtonColors.borderColor
-          }}
-          onMouseEnter={(e) => {
-            if (!hasUnsavedChanges && username) {
-              e.currentTarget.style.backgroundColor = previewButtonColors.hoverBackgroundColor;
-              e.currentTarget.style.color = previewButtonColors.hoverColor;
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!hasUnsavedChanges && username) {
-              e.currentTarget.style.backgroundColor = previewButtonColors.backgroundColor;
-              e.currentTarget.style.color = previewButtonColors.color;
-            }
-          }}
-        >
-          {hasUnsavedChanges ? "Save to preview" : "Preview"}
-        </button>
+    <div className="min-h-screen pt-24 md:pt-28 px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10">
+      <div
+        className="mx-auto max-w-xl rounded-lg shadow-xl transition-colors duration-300 ease-in-out p-6 sm:p-8 md:p-10 lg:p-12"
+        style={{ backgroundColor }}
+      >
+        <BasicInfo inputStyles={inputStyles} />
+        <LinkEditor inputStyles={inputStyles} />
+        <BackgroundChooser inputStyles={inputStyles} />
+        <Button onClick={saveProfile} disabled={loading} className="mt-4 cursor-pointer w-full">
+          {loading ? "Saving..." : "Save Profile"}
+        </Button>
         
-        <button
-          onClick={copyShareableLink}
-          disabled={!username}
-          className="py-2 px-4 rounded-md border-2 font-medium transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{
-            backgroundColor: !username ? "transparent" : previewButtonColors.backgroundColor,
-            color: !username ? "#9ca3af" : previewButtonColors.color,
-            borderColor: !username ? "#d1d5db" : previewButtonColors.borderColor
-          }}
-          onMouseEnter={(e) => {
-            if (username) {
-              e.currentTarget.style.backgroundColor = previewButtonColors.hoverBackgroundColor;
-              e.currentTarget.style.color = previewButtonColors.hoverColor;
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (username) {
-              e.currentTarget.style.backgroundColor = previewButtonColors.backgroundColor;
-              e.currentTarget.style.color = previewButtonColors.color;
-            }
-          }}
-        >
-          {copySuccess ? "Copied!" : "Copy Link"}
-        </button>
+        <div className="grid grid-cols-2 gap-1 sm:gap-2 mt-2 overflow-hidden">
+          <button
+            onClick={() => navigate(`/preview/${username}`)}
+            disabled={hasUnsavedChanges || !username}
+            className="py-2 px-1 sm:px-4 cursor-pointer rounded-md border-2 font-medium transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm min-w-0 overflow-hidden"
+            style={{
+              backgroundColor: hasUnsavedChanges || !username ? "transparent" : previewButtonColors.backgroundColor,
+              color: hasUnsavedChanges || !username ? "#9ca3af" : previewButtonColors.color,
+              borderColor: hasUnsavedChanges || !username ? "#d1d5db" : previewButtonColors.borderColor
+            }}
+            onMouseEnter={(e) => {
+              if (!hasUnsavedChanges && username) {
+                e.currentTarget.style.backgroundColor = previewButtonColors.hoverBackgroundColor;
+                e.currentTarget.style.color = previewButtonColors.hoverColor;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!hasUnsavedChanges && username) {
+                e.currentTarget.style.backgroundColor = previewButtonColors.backgroundColor;
+                e.currentTarget.style.color = previewButtonColors.color;
+              }
+            }}
+          >
+            <span className="block w-full text-center overflow-hidden text-ellipsis whitespace-nowrap">
+              {hasUnsavedChanges ? "Save to preview" : "Preview"}
+            </span>
+          </button>
+          
+          <button
+            onClick={copyShareableLink}
+            disabled={!username}
+            className="py-2 px-1 sm:px-4 cursor-pointer rounded-md border-2 font-medium transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm min-w-0 overflow-hidden"
+            style={{
+              backgroundColor: !username ? "transparent" : previewButtonColors.backgroundColor,
+              color: !username ? "#9ca3af" : previewButtonColors.color,
+              borderColor: !username ? "#d1d5db" : previewButtonColors.borderColor
+            }}
+            onMouseEnter={(e) => {
+              if (username) {
+                e.currentTarget.style.backgroundColor = previewButtonColors.hoverBackgroundColor;
+                e.currentTarget.style.color = previewButtonColors.hoverColor;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (username) {
+                e.currentTarget.style.backgroundColor = previewButtonColors.backgroundColor;
+                e.currentTarget.style.color = previewButtonColors.color;
+              }
+            }}
+          >
+            <span className="block w-full text-center overflow-hidden text-ellipsis whitespace-nowrap">
+              {copySuccess ? "Copied!" : "Copy Link"}
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   );

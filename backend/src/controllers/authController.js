@@ -11,7 +11,17 @@ export const register = async (req, res) => {
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await User.create({ email, passwordHash });
 
-  res.json({ message: "User registered", userId: user._id });
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+  res
+    .cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    })
+    .json({ message: "User registered", user });
 };
 
 export const login = async (req, res) => {
@@ -39,4 +49,25 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   res.clearCookie("token").json({ message: "Logged out" });
+};
+
+export const verify = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    
+    if (!token) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId);
+    
+    if (!user) {
+      return res.status(401).json({ error: "User not found" });
+    }
+
+    res.json({ user: { email: user.email } });
+  } catch (error) {
+    res.status(401).json({ error: "Invalid token" });
+  }
 };

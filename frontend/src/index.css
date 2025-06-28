@@ -47,4 +47,19 @@ body {
   .nav-link:hover::after {
     width: 100%;
   }
+
+  /* Additional text overflow utilities */
+  .text-truncate-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }

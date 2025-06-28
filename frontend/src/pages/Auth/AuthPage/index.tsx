@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "@/store/store";
@@ -10,7 +10,14 @@ const AuthPage = () => {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setUser} = useAuthStore();
+  const { setUser, user } = useAuthStore();
+
+  // Redirect if user is already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +29,7 @@ const AuthPage = () => {
         { withCredentials: true }
       );
       const userData = res.data.user;
-      setUser(userData.email);
+      setUser({ email: userData.email });
 
       navigate("/dashboard");
     } catch (err: any) {
@@ -34,11 +41,13 @@ const AuthPage = () => {
     e.preventDefault();
     setError("");
     try {
-      await axios.post(
+      const res = await axios.post(
         "http://localhost:3000/api/auth/register",
         { username, email, password },
         { withCredentials: true }
       );
+      const userData = res.data.user;
+      setUser({ email: userData.email });
 
       navigate("/dashboard");
     } catch (err: any) {

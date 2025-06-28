@@ -104,7 +104,7 @@ export const Preview = () => {
   const imageBorderColor = getImageBorderColor();
 
 return (
-  <div className="min-h-screen flex flex-col items-center justify-start py-10 px-4 bg-gray-50">
+  <div className="min-h-screen flex flex-col items-center justify-start pt-24 md:pt-28 py-10 px-4 bg-gray-50">
     <div
       className="w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 bg-white p-6 text-center space-y-4"
       style={{ backgroundColor: bgColor }}

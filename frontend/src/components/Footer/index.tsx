@@ -10,7 +10,7 @@ const Footer = () => {
               <div className="p-2 rounded-lg bg-amber-800">
                 <Coffee className="text-white" size={16} />
               </div>
-              <span className="text-lg text-[#e6ccb2] font-bold gradient-text">snapp.bio</span>
+              <span className="text-lg text-[#e6ccb2] font-bold gradient-text">snappy.bio</span>
             </div>
             <p className="text-gray-200 text-sm">
               The smoothest way to create a rich bio page for all your links.
