@@ -1,32 +1,49 @@
-import express from 'express';
 import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
 import cors from 'cors';
-import {connectDB} from './config/db.js';
+import { connectDB } from './config/db.js';
 import authRoutes from "./routes/auth.js"
 import uploadRoutes from "./routes/upload.js";
 import userRoutes from "./routes/user.js";
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 
-dotenv.config();
 
-connectDB();
+const app = express();
 
-const app = express()
-app.use(cors({
-  origin: "http://localhost:5173", // Replace with your frontend URL
-  credentials: true, // Required if you're using cookies or Clerk tokens
-}));
+
+const __dirname = path.resolve();
+
+if(process.env.NODE_ENV !== "production") {
+  app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true, // Allow cookies to be sent
+  }));
+}
+
+
 app.use(cookieParser());
 app.use(express.json());
+
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api", uploadRoutes); // ← register upload route
+app.use("/api", uploadRoutes);
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
+  })
+}
 
 const PORT = process.env.PORT || 3000;
 
 
 app.listen(PORT, () => {
+  connectDB();
+
   console.log(`Example app listening on port ${PORT}`)
 })

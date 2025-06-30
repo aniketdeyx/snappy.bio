@@ -1,7 +1,6 @@
 import { useEditorStore } from "../../../store/store";
 import { useRef, useState } from "react";
 import { basicInfoSchema, validateField } from "../../../lib/validations";
-import { uploadApi } from "../../../lib/api";
 
 interface InputStyles {
   backgroundColor: string;
