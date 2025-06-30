@@ -5,6 +5,10 @@ import { LinkEditor } from "../comps/LinkEditor";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import { profileSchema, validateForm } from "../../../lib/validations";
+import { getInputStyles, getPreviewButtonColors } from "../../../lib/colorUtils";
+import { userApi } from "../../../lib/api";
+import type { ProfileUpdateData } from "../../../lib/api";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -25,66 +29,9 @@ const Profile = () => {
     setLinks,
     setBackgroundColor, } = useEditorStore();
 
-  // Function to determine if a color is light or dark
-  const isLightColor = (color: string) => {
-    if (!color || color === "#ffffff") return true;
-    const hex = color.replace('#', '');
-    const r = parseInt(hex.substr(0, 2), 16);
-    const g = parseInt(hex.substr(2, 2), 16);
-    const b = parseInt(hex.substr(4, 2), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.5;
-  };
-
-  // Get dynamic styles for inputs based on background color
-  const getInputStyles = () => {
-    const isLight = isLightColor(backgroundColor);
-    
-    if (isLight) {
-      return {
-        backgroundColor: "#ffffff",
-        color: "#1f2937",
-        borderColor: "#d1d5db",
-        placeholderColor: "#9ca3af",
-        labelColor: "#1f2937"
-      };
-    } else {
-      return {
-        backgroundColor: "#f9fafb",
-        color: "#111827", 
-        borderColor: "#6b7280",
-        placeholderColor: "#6b7280",
-        labelColor: "#f9fafb"
-      };
-    }
-  };
-
-  const inputStyles = getInputStyles();
-
-  // Get button colors for the preview button
-  const getPreviewButtonColors = () => {
-    const isLight = isLightColor(backgroundColor);
-    
-    if (isLight) {
-      return {
-        backgroundColor: "transparent",
-        color: "#1f2937",
-        borderColor: "#1f2937",
-        hoverBackgroundColor: "#1f2937",
-        hoverColor: "#ffffff"
-      };
-    } else {
-      return {
-        backgroundColor: "transparent",
-        color: "#f9fafb",
-        borderColor: "#f9fafb",
-        hoverBackgroundColor: "#f9fafb",
-        hoverColor: "#1f2937"
-      };
-    }
-  };
-
-  const previewButtonColors = getPreviewButtonColors();
+  // Generate dynamic styles based on background color
+  const inputStyles = getInputStyles(backgroundColor);
+  const previewButtonColors = getPreviewButtonColors(backgroundColor);
 
   // Check if current data differs from initial data
   useEffect(() => {
@@ -111,19 +58,13 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/user/profile", {
-          credentials: "include",
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
+        const data = await userApi.getProfile();
 
-
-        if (!res.ok) throw new Error(data.error || "Failed to fetch profile");
+        if (!data.user) throw new Error(data.error || "Failed to fetch profile");
 
         setUsername(data.user?.username || "");
         setBio(data.user?.bio || "");
-        setProfileImage(data.user?.profileImage);
+        setProfileImage(data.user?.profileImage || null);
         setLinks(data?.user.links);
         setBackgroundColor(data.user?.appearance?.bgColor || "#ffffff");
         
@@ -146,38 +87,56 @@ const Profile = () => {
   }, []);
 
   const saveProfile = async () => {
+    // Validate the entire profile before saving
+    const profileData = {
+      username,
+      bio,
+      profileImage: profileImage || undefined, // Convert null to undefined for Zod
+      links,
+      backgroundColor
+    };
+
+    const validation = validateForm(profileSchema, profileData);
+    
+    if (!validation.isValid) {
+      console.error("Validation errors:", validation.errors);
+      // You could show these errors to the user here
+      return;
+    }
+
     setLoading(true);
     console.log(backgroundColor)
-    const res = await fetch("http://localhost:3000/api/user/profile", {
-      method: "PUT",
-      credentials: "include", // include cookie with token
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    
+    try {
+      const updateData: ProfileUpdateData = {
+        username,
+        bio,
+        profileImage: profileImage || undefined,
+        links,
+        bgColor: backgroundColor
+      };
+
+      const data = await userApi.updateProfile(updateData);
+      
+      if (!data.user) throw new Error(data.error || "Failed to update profile");
+
+      console.log("Success:", data);
+      
+      // Update initial data to reflect saved state
+      setInitialData({
         username,
         bio,
         profileImage,
-        links,
-        bgColor: backgroundColor
-      }),
-    });
-
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) throw new Error(data.error || "Failed to update profile");
-
-    console.log("Success:", data);
-    
-    // Update initial data to reflect saved state
-    setInitialData({
-      username,
-      bio,
-      profileImage,
-      links: JSON.stringify(links),
-      backgroundColor
-    });
-    setHasUnsavedChanges(false);
-    
-    // Don't automatically navigate to preview anymore
+        links: JSON.stringify(links),
+        backgroundColor
+      });
+      setHasUnsavedChanges(false);
+    } catch (error) {
+      console.error("Save failed:", error);
+      // You could show an error message to the user here
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Function to copy shareable link

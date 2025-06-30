@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "@/store/store";
+import { loginSchema, registerSchema, validateForm } from "@/lib/validations";
+import { authApi } from "@/lib/api";
+import type { LoginCredentials, RegisterCredentials } from "@/lib/api";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,6 +11,7 @@ const AuthPage = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
   const { setUser, user } = useAuthStore();
 
@@ -22,36 +25,56 @@ const AuthPage = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    try {
-      const res = await axios.post(
-        "http://localhost:3000/api/auth/login",
-        { email, password },
-        { withCredentials: true }
-      );
-      const userData = res.data.user;
-      setUser({ email: userData.email });
+    setValidationErrors({});
 
+    // Validate form data
+    const formData: LoginCredentials = { email, password };
+    const validation = validateForm(loginSchema, formData);
+    
+    if (!validation.isValid) {
+      setValidationErrors(validation.errors);
+      return;
+    }
+
+    try {
+      const data = await authApi.login(formData);
+      
+      if (!data.user) {
+        throw new Error(data.error || "Login failed");
+      }
+      
+      setUser({ email: data.user.email });
       navigate("/dashboard");
     } catch (err: any) {
-      setError(err.response?.data?.error || "Login failed");
+      setError(err.message || err.response?.data?.error || "Login failed");
     }
   };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    try {
-      const res = await axios.post(
-        "http://localhost:3000/api/auth/register",
-        { username, email, password },
-        { withCredentials: true }
-      );
-      const userData = res.data.user;
-      setUser({ email: userData.email });
+    setValidationErrors({});
 
+    // Validate form data
+    const formData: RegisterCredentials = { username, email, password };
+    const validation = validateForm(registerSchema, formData);
+    
+    if (!validation.isValid) {
+      setValidationErrors(validation.errors);
+      return;
+    }
+
+    try {
+      const data = await authApi.register(formData);
+      
+      if (!data.user) {
+        throw new Error(data.error || "Registration failed");
+      }
+      
+      setUser({ email: data.user.email });
       navigate("/dashboard");
     } catch (err: any) {
-      setError(err.response?.data?.error || "Registration failed");
+      setError(err.message || err.response?.data?.error || "Registration failed");
     }
   };
 
@@ -83,9 +106,14 @@ const AuthPage = () => {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg text-zinc-700 border-[#9c6644] placeholder:text-black/30 focus:outline-none"
+                className={`w-full px-4 py-2 border rounded-lg text-zinc-700 placeholder:text-black/30 focus:outline-none ${
+                  validationErrors.username ? 'border-red-500' : 'border-[#9c6644]'
+                }`}
                 placeholder="yourname"
               />
+              {validationErrors.username && (
+                <p className="text-red-500 text-xs mt-1">{validationErrors.username}</p>
+              )}
             </div>
           )}
 
@@ -98,9 +126,14 @@ const AuthPage = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg text-zinc-700 border-[#9c6644] placeholder:text-black/30 focus:outline-none"
+              className={`w-full px-4 py-2 border rounded-lg text-zinc-700 placeholder:text-black/30 focus:outline-none ${
+                validationErrors.email ? 'border-red-500' : 'border-[#9c6644]'
+              }`}
               placeholder="you@example.com"
             />
+            {validationErrors.email && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors.email}</p>
+            )}
           </div>
 
           <div>
@@ -112,9 +145,14 @@ const AuthPage = () => {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg text-zinc-700 border-[#9c6644] placeholder:text-black/30 focus:outline-none"
+              className={`w-full px-4 py-2 border rounded-lg text-zinc-700 placeholder:text-black/30 focus:outline-none ${
+                validationErrors.password ? 'border-red-500' : 'border-[#9c6644]'
+              }`}
               placeholder="••••••••"
             />
+            {validationErrors.password && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors.password}</p>
+            )}
           </div>
 
           <button

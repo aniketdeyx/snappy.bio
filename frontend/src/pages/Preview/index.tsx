@@ -1,63 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-
-interface LinkItem {
-  id: string;
-  label: string;
-  url: string;
-  icon: string;
-}
-
+import { 
+  getButtonColors, 
+  getTextColors, 
+  getImageBorderColor,
+  getButtonTextColor 
+} from "../../lib/colorUtils";
+import { userApi } from "../../lib/api";
+import type { User, LinkItem } from "../../lib/api";
 
 export const Preview = () => {
   const { username } = useParams();
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-
-  // Function to determine if a color is light or dark
-  const isLightColor = (color: string) => {
-    const hex = color.replace('#', '');
-    const r = parseInt(hex.substr(0, 2), 16);
-    const g = parseInt(hex.substr(2, 2), 16);
-    const b = parseInt(hex.substr(4, 2), 16);
-    // Calculate luminance
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.5;
-  };
-
-  // Function to get suitable button colors based on background
-  const getButtonColors = (bgColor: string) => {
-    if (!bgColor || bgColor === "#ffffff") {
-      // Default colors for white/light backgrounds
-      return {
-        primary: "#3b82f6", // Blue
-        hover: "#2563eb"
-      };
-    }
-
-    const isLight = isLightColor(bgColor);
-    
-    if (isLight) {
-      // For light backgrounds, use darker colors
-      return {
-        primary: "#1f2937", // Dark gray
-        hover: "#111827"
-      };
-    } else {
-      // For dark backgrounds, use lighter colors
-      return {
-        primary: "#f3f4f6", // Light gray
-        hover: "#e5e7eb"
-      };
-    }
-  };
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/user/profile/${username}`);
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Failed to fetch profile");
+        const data = await userApi.getPublicProfile(username!);
         setProfile(data);
       } catch (err) {
         console.error(err);
@@ -75,33 +35,8 @@ export const Preview = () => {
   const { bio, profileImage, links, appearance } = profile;
   const bgColor = appearance?.bgColor || "#ffffff";
   const buttonColors = getButtonColors(bgColor);
-  
-  // Get text colors based on background
-  const getTextColors = () => {
-    const isLight = isLightColor(bgColor);
-    
-    if (isLight) {
-      return {
-        primary: "#1f2937", // Dark text for light backgrounds
-        secondary: "#6b7280" // Medium gray for secondary text
-      };
-    } else {
-      return {
-        primary: "#f9fafb", // Light text for dark backgrounds
-        secondary: "#d1d5db" // Light gray for secondary text
-      };
-    }
-  };
-
-  const textColors = getTextColors();
-
-  // Get border colors for profile image
-  const getImageBorderColor = () => {
-    const isLight = isLightColor(bgColor);
-    return isLight ? "#d1d5db" : "#6b7280"; // Light gray for light bg, medium gray for dark bg
-  };
-
-  const imageBorderColor = getImageBorderColor();
+  const textColors = getTextColors(bgColor);
+  const imageBorderColor = getImageBorderColor(bgColor);
 
 return (
   <div className="min-h-screen flex flex-col items-center justify-start pt-24 md:pt-28 py-10 px-4 bg-gray-50">
@@ -159,7 +94,7 @@ return (
             className="block py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
             style={{ 
               backgroundColor: buttonColors.primary,
-              color: isLightColor(buttonColors.primary) ? "#1f2937" : "#ffffff"
+              color: getButtonTextColor(buttonColors.primary)
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = buttonColors.hover;

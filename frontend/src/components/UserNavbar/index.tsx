@@ -1,21 +1,18 @@
 import { Link, useNavigate } from "react-router";
 import { useAuthStore } from "../../store/store.ts";
 import { LogOut } from "lucide-react";
+import { authApi } from "../../lib/api";
 
 const UserNavbar = () => {
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
-      await fetch('http://localhost:3000/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-      });
+      await authApi.logout();
       clearUser();
       navigate('/')
     } catch (error) {
       console.error("Logout failed:", error);
     }
-
   }
   const { clearUser } = useAuthStore();
 

@@ -1,0 +1,21 @@
+{
+  "name": "snappy.bio",
+  "short_name": "snappy.bio",
+  "description": "Create beautiful, personalized link pages to showcase all your social media and content",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#9c6644",
+  "background_color": "#ede0d4"
+}
