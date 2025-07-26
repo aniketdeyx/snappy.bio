@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import gsap from "gsap";
 import {useGSAP } from "@gsap/react"
 import { SplitText } from "gsap/all";
+import Clouds from "../Clouds";
 
 const Hero = () => {
 
@@ -13,6 +14,22 @@ const Hero = () => {
     const tl = gsap.timeline({
       delay: 0.3,
     });
+    
+    // Animate cloud images on load
+    gsap.fromTo(".cloud-bg", {
+      opacity: 0,
+      scale: 0.8,
+      y: 50,
+    }, {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      duration: 1.5,
+      stagger: 0.2,
+      ease: "power2.out",
+      delay: 0.5,
+    });
+    
     tl.to(".hero-container", {
       opacity: 1,
       y: 0,
@@ -39,9 +56,12 @@ const Hero = () => {
   const navigate = useNavigate();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#ede0d4] via-[#e6ccb2] to-[#ede0d4]">
+      {/* Background cloud images */}
+      <Clouds />
+      
       {/* Background coffee beans effect */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-amber-600/20 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-700/15 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-amber-600/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-700/8 rounded-full blur-3xl animate-pulse delay-1000" />
       
       <div className="relative opacity-0 hero-container z-10 text-center max-w-4xl mx-auto px-6">
         <div className="flex items-center hero-upper-text justify-center mb-6">
