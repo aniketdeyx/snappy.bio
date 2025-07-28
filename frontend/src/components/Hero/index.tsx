@@ -15,21 +15,6 @@ const Hero = () => {
       delay: 0.3,
     });
     
-    // Animate cloud images on load
-    gsap.fromTo(".cloud-bg", {
-      opacity: 0,
-      scale: 0.8,
-      y: 50,
-    }, {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      duration: 1.5,
-      stagger: 0.2,
-      ease: "power2.out",
-      delay: 0.5,
-    });
-    
     tl.to(".hero-container", {
       opacity: 1,
       y: 0,
@@ -57,7 +42,7 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#ede0d4] via-[#e6ccb2] to-[#ede0d4]">
       {/* Background cloud images */}
-      <Clouds />
+      <Clouds/>
       
       {/* Background coffee beans effect */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-amber-600/10 rounded-full blur-3xl animate-pulse" />
