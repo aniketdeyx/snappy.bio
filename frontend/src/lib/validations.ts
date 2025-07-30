@@ -51,16 +51,16 @@ export const basicInfoSchema = z.object({
 
 // Link schema
 export const linkSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   label: z
     .string()
     .min(1, 'Link title is required')
     .max(50, 'Link title must be less than 50 characters'),
   url: z
     .string()
-    .min(1, 'URL is required')
     .url('Please enter a valid URL (include https://)')
-    .max(500, 'URL must be less than 500 characters'),
+    .max(500, 'URL must be less than 500 characters')
+    .optional(),
   icon: z.string().optional(),
 });
 
@@ -106,6 +106,8 @@ export const validateField = <T>(schema: z.ZodSchema<T>, value: T): { isValid: b
 export const validateForm = <T>(schema: z.ZodSchema<T>, data: T): { isValid: boolean; errors: Record<string, string> } => {
   try {
     schema.parse(data);
+    console.log(data);
+    
     return { isValid: true, errors: {} };
   } catch (error) {
     if (error instanceof z.ZodError) {

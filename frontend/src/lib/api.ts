@@ -45,7 +45,7 @@ export interface ProfileUpdateData {
   username: string;
   bio: string;
   profileImage?: string;
-  links: LinkItem[];
+  links?: LinkItem[];
   bgColor: string;
 }
 
