@@ -4,7 +4,9 @@ import type { AxiosResponse } from 'axios';
 // Get API base URL based on environment
 const getApiBaseUrl = () => {
   if (import.meta.env.PROD) {
-    return '/api'; // In production, use relative path (Vercel routes will handle this)
+    // In production, use your Render backend URL
+    // Replace 'your-backend-name' with your actual Render service name
+    return 'https://snappy-bio-api.onrender.com/api'; 
   }
   return 'http://localhost:3000/api'; // Development
 };

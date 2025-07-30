@@ -86,7 +86,9 @@ export const useAuthStore = create<AuthState>((set) => ({
         const userData = JSON.parse(storedUser);
         
         // Verify the session is still valid with the backend
-        const apiUrl = import.meta.env.PROD ? '/api/auth/verify' : 'http://localhost:3000/api/auth/verify';
+        const apiUrl = import.meta.env.PROD 
+          ? 'https://snappy-bio-api.onrender.com/api/auth/verify' 
+          : 'http://localhost:3000/api/auth/verify';
         const response = await fetch(apiUrl, {
           credentials: 'include',
         });

@@ -1,0 +1,31 @@
+services:
+  # Backend API Service
+  - type: web
+    name: snappy-bio-api
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        sync: false  # Set this in Render dashboard
+      - key: MONGO_URI
+        sync: false  # Set this in Render dashboard
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false  # Set this in Render dashboard
+      - key: CLOUDINARY_API_KEY
+        sync: false  # Set this in Render dashboard
+      - key: CLOUDINARY_API_SECRET
+        sync: false  # Set this in Render dashboard
+      - key: PORT
+        value: 10000  # Render uses port 10000
+
+  # Frontend Static Site
+  - type: web
+    name: snappy-bio-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    pullRequestPreviewsEnabled: false
