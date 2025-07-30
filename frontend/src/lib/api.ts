@@ -1,9 +1,17 @@
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 
+// Get API base URL based on environment
+const getApiBaseUrl = () => {
+  if (import.meta.env.PROD) {
+    return '/api'; // In production, use relative path (Vercel routes will handle this)
+  }
+  return 'http://localhost:3000/api'; // Development
+};
+
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: getApiBaseUrl(),
   withCredentials: true, // Include cookies with all requests
   headers: {
     'Content-Type': 'application/json',

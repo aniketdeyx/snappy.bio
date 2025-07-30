@@ -66,7 +66,8 @@ export const BasicInfo = ({ inputStyles }: BasicInfoProps) => {
     formData.append("image", file);
 
     try {
-      const res = await fetch("http://localhost:3000/api/upload", {
+      const apiUrl = import.meta.env.PROD ? "/api/upload" : "http://localhost:3000/api/upload";
+      const res = await fetch(apiUrl, {
         method: "POST",
         credentials: "include",
         body: formData,
