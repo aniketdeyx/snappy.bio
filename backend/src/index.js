@@ -31,7 +31,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api", uploadRoutes);
-
+app.get('/', (req, res) => {
+  res.send("Backend root is working");
+});
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ message: 'Server is running', timestamp: new Date().toISOString() });
