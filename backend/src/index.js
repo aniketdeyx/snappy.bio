@@ -20,8 +20,8 @@ const __dirname = path.resolve();
 // CORS configuration for all environments
 const corsOptions = {
   origin: process.env.NODE_ENV === "production" 
-    ? ["https://snappy-bio-frontend.onrender.com", process.env.CLIENT_URL].filter(Boolean)
-    : process.env.CLIENT_URL || "http://localhost:5173", // Development default
+    ? ["https://snappy-bio.vercel.app", "https://snappy-bio-frontend.onrender.com", process.env.CLIENT_URL].filter(Boolean)
+    : true, // Allow all origins in development
   credentials: true, // Allow cookies to be sent
 };
 
