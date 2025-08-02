@@ -5,8 +5,21 @@ import gsap from "gsap";
 import {useGSAP } from "@gsap/react"
 import { SplitText } from "gsap/all";
 import Clouds from "../Clouds";
+import { useState, useEffect } from "react";
 
 const Hero = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useGSAP(() => {
     const heroText = SplitText.create(".hero-upper-text", {type: "chars"});
@@ -42,7 +55,8 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#ede0d4] via-[#e6ccb2] to-[#ede0d4]">
       {/* Background cloud images */}
-      <Clouds/>
+      {!isMobile && <Clouds/>}
+      
       
       {/* Background coffee beans effect */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-amber-600/10 rounded-full blur-3xl animate-pulse" />
