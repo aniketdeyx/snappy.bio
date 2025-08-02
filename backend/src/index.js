@@ -35,12 +35,18 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api", uploadRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-  app.get(/^(?!\/api).*/, (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
-  })
-}
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ message: 'Server is running', timestamp: new Date().toISOString() });
+});
+
+// Only serve static files if frontend is built with backend (not applicable for separate deployments)
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, '../frontend/dist')));
+//   app.get(/^(?!\/api).*/, (req, res) => {
+//     res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
+//   })
+// }
 
 const PORT = process.env.PORT || 3000;
 
