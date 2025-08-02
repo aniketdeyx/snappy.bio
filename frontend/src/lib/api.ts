@@ -88,7 +88,7 @@ export const authApi = {
 
 
   checkAuth: async (): Promise<ApiResponse<User>> => {
-    const response: AxiosResponse<ApiResponse<User>> = await api.get('/auth/check');
+    const response: AxiosResponse<ApiResponse<User>> = await api.get('/auth/verify');
     return response.data;
   },
 };
