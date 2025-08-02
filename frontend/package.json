@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "vercel-build": "npm run build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
