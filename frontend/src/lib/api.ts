@@ -6,7 +6,7 @@ const getApiBaseUrl = () => {
   if (import.meta.env.PROD) {
     // In production, use your Render backend URL
     // Replace 'your-backend-name' with your actual Render service name
-    return 'https://snappy-bio-api.onrender.com/api'; 
+    return 'https://snappy-bio.onrender.com/api'; 
   }
   return 'http://localhost:3000/api'; // Development
 };
