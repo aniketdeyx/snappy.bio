@@ -8,7 +8,7 @@ const getApiBaseUrl = () => {
     // Replace 'your-backend-name' with your actual Render service name
     return 'https://snappy-bio.onrender.com/api'; 
   }
-  return 'http://localhost:3000/api'; // Development
+  return 'https://snappy-bio.onrender.com/api'; // Development
 };
 
 // Create axios instance with default config
